@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import LoginPage from './pages/LoginPage.js/LoginPage';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import PageAdapter from './components/PageAdapter/PageAdapter';
 
-ReactDOM.render(<LoginPage />, document.getElementById('root'));
+ReactDOM.render(<PageAdapter />, document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

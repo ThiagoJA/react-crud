@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ForgotPasswordModal from '../../components/ForgotPasswordModal/ForgotPasswordModal';
-import { login } from '../../services/Services';
+import ForgotPasswordModal from '../components/ForgotPasswordModal/ForgotPasswordModal';
+import { login } from '../services/Services';
 
-const Login = (email, password) => {
+const Login = (email, password, setPage) => {
   const data = { email, password };
-  // TODO - CREATE HOME PAGE AND VALIDADE LOGIN
-  login(data).then((res) => console.log(res));
+  login(data).then(() => setPage(1));
 };
 
 const Main = styled.main`
@@ -79,7 +78,8 @@ const ForgotPassword = styled.input`
   }
 `;
 
-const LoginPage = () => {
+// eslint-disable-next-line react/prop-types
+const LoginPage = ({ setPage }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
@@ -89,11 +89,11 @@ const LoginPage = () => {
         <section>
           <Form onSubmit={(e) => {
             e.preventDefault();
-            Login(email, password);
+            Login(email, password, setPage);
           }}
           >
-            <TextInput type="text" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-            <TextInput type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+            <TextInput email type="text" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+            <TextInput password type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
             <FormFooter>
               <SubmitButton type="submit" value="Login" />
               <ForgotPassword value="Forgot password?" onClick={() => setShowForgotPasswordModal(true)} />
