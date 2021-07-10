@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import ForgotPasswordModal from '../components/ForgotPasswordModal/ForgotPasswordModal';
 import { login } from '../services/Services';
+import StoreContext from '../components/Store/Context';
 
-const Login = (email, password, setPage) => {
+const Login = (email, password, setPage, setToken) => {
   const data = { email, password };
-  login(data).then(() => setPage(1));
+  login(data).then((res) => {
+    setToken(res.data.token);
+    setPage(1);
+  });
 };
 
 const Main = styled.main`
@@ -80,6 +84,7 @@ const ForgotPassword = styled.input`
 
 // eslint-disable-next-line react/prop-types
 const LoginPage = ({ setPage }) => {
+  const { setToken } = useContext(StoreContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
@@ -89,7 +94,7 @@ const LoginPage = ({ setPage }) => {
         <section>
           <Form onSubmit={(e) => {
             e.preventDefault();
-            Login(email, password, setPage);
+            Login(email, password, setPage, setToken);
           }}
           >
             <TextInput email type="text" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
