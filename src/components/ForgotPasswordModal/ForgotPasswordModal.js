@@ -74,10 +74,9 @@ const TextInput = styled.input`
   }
 `;
 
-const ForgotPassord = (email) => {
+const ForgotPassord = (email, close) => {
   const data = { email };
-  // TODO - CREATE ERROR AND SUCCESS MSG
-  forgot(data).then((res) => console.log(res));
+  forgot(data).then(() => close(false));
 };
 
 const ForgotPasswordModal = (props) => {
@@ -93,7 +92,7 @@ const ForgotPasswordModal = (props) => {
       <CloseButton type="button" value="x" onClick={() => close(false)} />
       <Form onSubmit={(e) => {
         e.preventDefault();
-        ForgotPassord(email);
+        ForgotPassord(email, close);
       }}
       >
         <TextInput type="text" placeholder="email" onChange={(e) => setEmail(e.target.value)} />

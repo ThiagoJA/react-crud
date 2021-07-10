@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import HomePage from '../../pages/HomePage';
 import LoginPage from '../../pages/LoginPage';
+import StoreProvider from '../Store/Provider';
 
 const PageAdapter = () => {
   const [page, setPage] = useState(0);
@@ -8,7 +9,11 @@ const PageAdapter = () => {
     <LoginPage setPage={setPage} />,
     <HomePage setPage={setPage} />,
   ];
-  return pages[page];
+  return (
+    <StoreProvider>
+      {pages[page]}
+    </StoreProvider>
+  );
 };
 
 export default PageAdapter;
