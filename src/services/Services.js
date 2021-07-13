@@ -11,6 +11,12 @@ export const login = (data) => httpClient.post('/auth/login', data);
 
 export const forgot = (data) => httpClient.post('/auth/forgot', data);
 
-export const update = (id, data) => httpClient.put(`/livro/${id}`, data);
+export const getAllProducts = () => httpClient.get('/products');
 
-export const remove = (id) => httpClient.delete(`/livro/${id}`);
+export const getProductById = (id) => httpClient.get(`/products/${id}`);
+
+export const editProduct = (id, data) => httpClient.post(`/products/${id}`, data);
+
+export const addProduct = (data) => httpClient.post('/products', data);
+
+export const removeProduct = (id) => httpClient.delete(`/products/${id}`);

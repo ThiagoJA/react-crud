@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import styled from 'styled-components';
 import Orders from './Orders';
-import { Products } from './Products';
+import Products from './Products';
 import { Users } from './Users';
 import { Categories } from './Categories';
 

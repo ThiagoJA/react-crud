@@ -22,7 +22,7 @@ const Orders = () => {
   }, []);
   return (
     <Main>
-      {orders.map((order, idx) => <OrderItem order={order} idx={idx} />)}
+      {orders.map((order, idx) => <OrderItem key={`order-${order.id}`} order={order} idx={idx} />)}
     </Main>
   );
 };
