@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import StoreContext from '../Store/Context';
-import { getAllProducts } from '../../services/Services';
+import { getAllCategories } from '../../services/Services';
 
 const OverlaySection = styled.section`
   width: 100%;
@@ -22,11 +22,11 @@ const Section = styled.div`
   flex-direction: column;
   align-items: center;
   margin: auto;
-  width: 400px;
-  left: calc(50% - +150px);
+  width: 200px;
+  left: calc(50% - +100px);
   background: #012a46;
-  top: calc(50% - +150px);
-  height: 400px;
+  top: calc(50% - +100px);
+  height: 200px;
   border-radius: 10px;
   border: 2px solid #3e95cc;
 `;
@@ -100,14 +100,10 @@ const HandlerButton = styled.input`
   background: #E67555;
 `;
 
-const handleAddProduct = (productName,
-  productDescription, productImage, productPrice,
-  setOpenModal, setProducts, token) => {
+const handleAddCategorie = (categorieName,
+  setOpenModal, setCategories, token) => {
   const data = {
-    description: productDescription,
-    name: productName,
-    imgUrl: productImage,
-    price: Number(productPrice),
+    name: categorieName,
   };
   const httpClient = axios.create({
     baseURL: 'https://projeto-integrador-4.herokuapp.com',
@@ -115,23 +111,20 @@ const handleAddProduct = (productName,
       Authorization: `Bearer ${token}`,
     },
   });
-  httpClient.post('/products', data)
+  httpClient.post('/categories', data)
     .then(() => {
       setOpenModal(false);
-      getAllProducts().then((res) => setProducts(res.data.content));
+      getAllCategories().then((res) => setCategories(res.data));
     })
   // eslint-disable-next-line no-alert
     .catch((err) => window.alert(err));
 };
 
-const AddProduct = (props) => {
+const AddCategorie = (props) => {
   const [openModal, setOpenModal] = useState(false);
-  const [productName, setProductName] = useState('');
-  const [productDescription, setProductDescription] = useState('');
-  const [productImage, setProductImage] = useState('');
-  const [productPrice, setProductPrice] = useState('');
+  const [categorieName, setCategorieName] = useState('');
   const { token } = useContext(StoreContext);
-  const { setProducts } = props;
+  const { setCategories } = props;
   return (
     <>
       <HandlerButton type="button" value="+" onClick={() => setOpenModal(true)} />
@@ -141,16 +134,12 @@ const AddProduct = (props) => {
             <CloseButton type="button" value="X" onClick={() => setOpenModal(false)} />
             <Form onSubmit={(e) => {
               e.preventDefault();
-              handleAddProduct(productName,
-                productDescription, productImage, productPrice,
-                setOpenModal, setProducts, token);
+              handleAddCategorie(categorieName,
+                setOpenModal, setCategories, token);
             }}
             >
-              <TextInput type="text" placeholder="Name" onChange={(e) => setProductName(e.target.value)} />
-              <TextInput type="text" placeholder="Description" onChange={(e) => setProductDescription(e.target.value)} />
-              <TextInput type="text" placeholder="Image" onChange={(e) => setProductImage(e.target.value)} />
-              <TextInput type="text" placeholder="Price" onChange={(e) => setProductPrice(e.target.value)} />
-              <SubmitButton type="submit" value="Create product" />
+              <TextInput type="text" placeholder="Name" onChange={(e) => setCategorieName(e.target.value)} />
+              <SubmitButton type="submit" value="Create categorie" />
             </Form>
           </Section>
         </OverlaySection>
@@ -159,4 +148,4 @@ const AddProduct = (props) => {
   );
 };
 
-export default AddProduct;
+export default AddCategorie;

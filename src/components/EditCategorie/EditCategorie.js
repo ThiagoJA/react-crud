@@ -4,7 +4,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import StoreContext from '../Store/Context';
-import { getProductById, getAllProducts } from '../../services/Services';
+import { getCategorieById, getAllCategories } from '../../services/Services';
 
 const OverlaySection = styled.section`
   width: 100%;
@@ -88,17 +88,12 @@ const TextInput = styled.input`
   }
 `;
 
-const handleUpdateProduct = (
-  productToEdit, productName, productDescription,
-  productImage, productPrice, setShowEditProductModal,
-  setProducts, token,
+const handleUpdateCategorie = (
+  categorieToEdit, caategorieName, setShowEditCategorieModal,
+  setCategories, token,
 ) => {
   const data = {
-    id: productToEdit.id,
-    description: !!productDescription ? productDescription : productToEdit.description,
-    name: !!productName ? productName : productToEdit.name,
-    imgUrl: !!productImage ? productImage : productToEdit.imgUrl,
-    price: !!productPrice ? Number(productPrice) : Number(productToEdit.price),
+    name: !!caategorieName ? caategorieName : categorieToEdit.name,
   };
   const httpClient = axios.create({
     baseURL: 'https://projeto-integrador-4.herokuapp.com',
@@ -106,43 +101,36 @@ const handleUpdateProduct = (
       Authorization: `Bearer ${token}`,
     },
   });
-  httpClient.put(`/products/${productToEdit.id}`, data)
+  httpClient.put(`/categories/${categorieToEdit.id}`, data)
     .then(() => {
-      setShowEditProductModal(false);
-      getAllProducts().then((res) => setProducts(res.data.content));
+      setShowEditCategorieModal(false);
+      getAllCategories().then((res) => setCategories(res.data));
     })
   // eslint-disable-next-line no-alert
     .catch((err) => window.alert(err));
 };
 
-const EditProduct = ({ selectedProductToEdit, setShowEditProductModal, setProducts }) => {
-  const [productToEdit, setProductToEdit] = useState({});
-  const [productName, setProductName] = useState('');
-  const [productDescription, setProductDescription] = useState('');
-  const [productImage, setProductImage] = useState('');
-  const [productPrice, setProductPrice] = useState('');
+const EditProduct = ({ selectedCategorieToEdit, setShowEditCategorieModal, setCategories }) => {
+  const [categorieToEdit, setCategorieToEdit] = useState({});
+  const [caategorieName, setCategorieName] = useState('');
   const { token } = useContext(StoreContext);
   useEffect(() => {
-    getProductById(selectedProductToEdit).then((res) => {
-      setProductToEdit(res.data);
+    getCategorieById(selectedCategorieToEdit).then((res) => {
+      setCategorieToEdit(res.data);
     });
   }, []);
   return (
     <OverlaySection>
       <Section>
-        <CloseButton type="button" value="X" onClick={() => setShowEditProductModal(false)} />
+        <CloseButton type="button" value="X" onClick={() => setShowEditCategorieModal(false)} />
         <Form onSubmit={(e) => {
           e.preventDefault();
-          handleUpdateProduct(productToEdit, productName,
-            productDescription, productImage, productPrice,
-            setShowEditProductModal, setProducts, token);
+          handleUpdateCategorie(categorieToEdit, caategorieName,
+            setShowEditCategorieModal, setCategories, token);
         }}
         >
-          <TextInput type="text" placeholder="Name" onChange={(e) => setProductName(e.target.value)} />
-          <TextInput type="text" placeholder="Description" onChange={(e) => setProductDescription(e.target.value)} />
-          <TextInput type="text" placeholder="Image" onChange={(e) => setProductImage(e.target.value)} />
-          <TextInput type="text" placeholder="Price" onChange={(e) => setProductPrice(e.target.value)} />
-          <SubmitButton type="submit" value="Update product" />
+          <TextInput type="text" placeholder="Name" onChange={(e) => setCategorieName(e.target.value)} />
+          <SubmitButton type="submit" value="Update categorie" />
         </Form>
       </Section>
     </OverlaySection>

@@ -1,8 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import ForgotPasswordModal from '../components/ForgotPasswordModal/ForgotPasswordModal';
 import { login } from '../services/Services';
 import StoreContext from '../components/Store/Context';
+import RegisterModal from '../components/RegisterModal/RegisterModal';
 
 const Login = (email, password, setPage, setToken) => {
   const data = { email, password };
@@ -82,12 +83,25 @@ const ForgotPassword = styled.input`
   }
 `;
 
+const RegisterButton = styled.input`
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  background: #E67555;
+  padding: 12px;
+  margin-top: 16px;
+`;
+
 // eslint-disable-next-line react/prop-types
 const LoginPage = ({ setPage }) => {
   const { setToken } = useContext(StoreContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  useEffect(() => {
+    localStorage.removeItem('token');
+  }, []);
   return (
     <>
       <Main>
@@ -103,10 +117,12 @@ const LoginPage = ({ setPage }) => {
               <SubmitButton type="submit" value="Login" />
               <ForgotPassword value="Forgot password?" onClick={() => setShowForgotPasswordModal(true)} />
             </FormFooter>
+            <RegisterButton type="button" onClick={() => setShowRegisterModal(true)} value="Create Account" />
           </Form>
         </section>
       </Main>
       <ForgotPasswordModal open={showForgotPasswordModal} close={setShowForgotPasswordModal} />
+      <RegisterModal open={showRegisterModal} close={setShowRegisterModal} />
     </>
   );
 };
