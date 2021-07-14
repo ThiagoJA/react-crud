@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   BrowserRouter,
   Switch,
@@ -9,14 +9,15 @@ import {
 import styled from 'styled-components';
 import Orders from './Orders';
 import Products from './Products';
-import { Users } from './Users';
-import { Categories } from './Categories';
+import Categories from './Categories';
+import StoreContext from '../components/Store/Context';
 
 const Main = styled.main`
   margin: 0px;
   padding: 0px;
+  padding-bottom: 20px;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background: #00121e;
 `;
 
@@ -50,45 +51,47 @@ const ListItem = styled.li`
   }
 `;
 
-const HomePage = ({ setPage }) => (
-  <Main>
-    <BrowserRouter>
-      <NavBar>
-        <ListItem>
-          <Link to="/orders">
-            Orders
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link to="/products">
-            Products
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link to="/categories">
-            Categories
-          </Link>
-        </ListItem>
-        <ListItem>
-          <Link to="/users">
-            Users
-          </Link>
-        </ListItem>
-        <ListItem>
-          <input type="button" value="Logout" onClick={() => setPage(0)} />
-        </ListItem>
-      </NavBar>
+const logout = (setPage, setToken) => {
+  setToken('');
+  setPage(0);
+};
 
-      <div>
-        <Switch>
-          <Route exact path="/orders" component={Orders} />
-          <Route exact path="/products" component={Products} />
-          <Route exact path="/categories" component={Categories} />
-          <Route path="/users" component={Users} />
-        </Switch>
-      </div>
-    </BrowserRouter>
-  </Main>
-);
+const HomePage = ({ setPage }) => {
+  const { setToken } = useContext(StoreContext);
+  return (
+    <Main>
+      <BrowserRouter>
+        <NavBar>
+          <ListItem>
+            <Link to="/orders">
+              Orders
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link to="/products">
+              Products
+            </Link>
+          </ListItem>
+          <ListItem>
+            <Link to="/categories">
+              Categories
+            </Link>
+          </ListItem>
+          <ListItem>
+            <input type="button" value="Logout" onClick={() => logout(setPage, setToken)} />
+          </ListItem>
+        </NavBar>
+
+        <div>
+          <Switch>
+            <Route exact path={['/orders', '/']} component={Orders} />
+            <Route exact path="/products" component={Products} />
+            <Route exact path="/categories" component={Categories} />
+          </Switch>
+        </div>
+      </BrowserRouter>
+    </Main>
+  );
+};
 
 export default HomePage;

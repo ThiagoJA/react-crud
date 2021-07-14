@@ -16,9 +16,9 @@ const Products = () => {
     <section>
       {produtcs.map((product, idx) => <ProductItem key={`product-${product.id}`} product={product} idx={idx} setProducts={setProducts} setSelectedProductToEdit={setSelectedProductToEdit} setShowEditProductModal={setShowEditProductModal} />)}
       {showEditProductModal && (
-        <EditProduct setShowEditProductModal={setShowEditProductModal} selectedProductToEdit={selectedProductToEdit} />
+        <EditProduct setShowEditProductModal={setShowEditProductModal} selectedProductToEdit={selectedProductToEdit} setProducts={setProducts} />
       )}
-      <AddProduct />
+      <AddProduct setProducts={setProducts} />
     </section>
   );
 };
